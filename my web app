@@ -1,0 +1,184 @@
+#Airline Booking Platform
+
+##Overview
+
+This project is a customer-facing airline booking platform that integrates with the airline's core reservation system through APIs.
+The platform allows customers to:
+
+1. Search for available flights
+2. Select a flight and fare
+3. Enter passenger details
+4. Review their booking
+5. Make payment
+6. Confirm the booking
+7. Receive a booking reference
+
+The core reservation system remains the system of record for airline bookings, while this platform provides the customer-facing booking experience and coordinates the API calls required to complete a reservation.
+
+**********************************************************************************************************************************************************************************************************************
+
+# Architecture and Technology Stack
+
+## Architecture Overview
+
+The platform uses a layered architecture where the customer-facing application communicates with Navitaire/NewSkies through a backend integration layer.
+
+<div align="center">
+<pre>
+Customer
+   |
+   v
+React Frontend
+   |
+   v
+Backend API
+   |
+   +---------> Payment Gateway
+   |
+   +---------> Application Database
+   |
+   v
+Sabre Integration Layer
+   |
+   v
+Sabre
+```
+</pre>
+</div>
+
+Sabre remains the **system of record for airline bookings**, while the platform manages the customer journey, booking workflow, payments, validation, and error handling.
+
+## Tech Stack
+
+<div align="center">
+<pre>
+| Layer             | Technology                           |
+| ----------------- | ------------------------------------ |
+| Frontend          | React + TypeScript                   |
+| Backend           | .NET                                 |
+| API Documentation | Swagger / OpenAPI                    |
+| Database          | PostgreSQL                           |
+| Cache             | Redis                                |
+| API Gateway       | Azure API Management                 |
+| WAF/CDN           | Azure Front Door                     |
+| Secrets           | Azure Key Vault                      |
+| Monitoring        | Azure Monitor + Application Insights |
+| Source Control    | Azure Repos                          |
+| CI/CD             | Azure DevOps                         |
+| API Testing       | Postman                              |
+| E2E Testing       | Playwright                           |
+
+</pre>
+</div>
+
+## Backend Responsibilities
+
+The backend handles:
+
+* Sabre authentication and token management
+* Flight availability search
+* Passenger and booking management
+* Payment orchestration
+* Booking confirmation
+* Error handling and reconciliation
+* Logging and monitoring
+
+The frontend should **not communicate directly with Sabre**.
+
+<div align="center">
+<pre>
+```text
+Frontend -> Backend -> Navitaire
+```
+</pre>
+</div>
+
+## Security
+
+The platform should use:
+
+* HTTPS
+* WAF
+* API rate limiting
+* Secure secrets management
+* Input validation
+* Encryption
+* Audit logging
+* SAST and DAST
+* Vulnerability testing
+
+
+## Deployment Environments
+
+```text
+Development
+   |
+   v
+SIT
+   |
+   v
+UAT
+   |
+   v
+Production
+```
+
+Each environment should use separate credentials, configuration, databases, and external-system endpoints.
+
+## Key Design Principle
+
+> **The booking platform owns the customer experience and booking orchestration, while Navitaire remains the authoritative reservation system.**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Booking Flow
+
+The current API collection demonstrates the following basic booking flow:
+
+Authentication
+    |
+    v
+Flight Availability Search
+    |
+    v
+Flight Selection
+    |
+    v
+Passenger and Contact Details
+    |
+    v
+Create Trip / Booking State
+    |
+    v
+Retrieve Booking State
+    |
+    v
+Payment
+    |
+    v
+Commit Booking
+    |
+    v
+Booking Confirmation
